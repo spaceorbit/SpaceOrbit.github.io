@@ -1,0 +1,6 @@
+@font-face {
+    font-family: "ethnocentric";
+    font-style: normal;
+    font-weight: normal;
+    src: local("?"), url("ethnocentric.ttf") format("truetype");
+}
