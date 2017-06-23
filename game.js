@@ -100,6 +100,8 @@ var config = {
   god: false
 }
 
+var inGame = false;
+
 // Objeto explosión (usada en la Intro)
 Q.Sprite.extend("Explosion", {
   init:function(paramX, paramY, paramScale, explode){
@@ -771,7 +773,7 @@ Q.Sprite.extend("Spaceship", {
     });
 
     //----------------MODO GOD --------------- //
-    
+
     Q.input.on("ONE", this, function(){
       if(Q.state.get("godMode")){
         Q.state.set("level", 1);
@@ -907,7 +909,7 @@ Q.Sprite.extend("Spaceship", {
     if(this.p.vx != 0 && this.p.m%16*60 == 0){
         Q.state.set("orbimeters", Math.trunc(130000 - this.p.x));
         var p = Q.state.get("player")
-        p.blaster +=1;
+        if (Q.state.get("difficulty") == 1) p.blaster +=1;
         if(p.blaster >= 100){ // El blaster se regenera con la velocidad de la nave, usando la energía estelar fotovoltaica
           p.blaster = 100;
         }
@@ -1632,6 +1634,7 @@ Q.scene("level1",function(stage) {
       var station = stage.insert(new Q.Station(125000, 330, "finalStation.png", 1));
       // Seguimos el movimiento de la nave
       stage.add("viewport").follow(Spaceship,{ x: true, y: false });
+      inGame = true;
 });
 
 Q.scene("Intro",function(stage) {
@@ -1784,7 +1787,7 @@ Q.scene("Intro",function(stage) {
   });
 });
 Q.scene('menu', function(stage) {
-
+  inGame = false;
   var fondo = stage.insert(new Q.Fondo("fondo.png"));
 
   var musicTextLabel = stage.insert(new Q.UI.Text({x: Q.width/2 - 100,y: (Q.height/2), label: "Music", family: "ethnocentric",color: "#FFFFFF"}));
@@ -1802,7 +1805,9 @@ Q.scene('menu', function(stage) {
   var buttonLG = stage.insert(new Q.UI.Button({x: godLabel.p.x - 110, y: godLabel.p.y+15, w: 50, h: 50, asset:"leftarrow.png" }));
   var buttonRG = stage.insert(new Q.UI.Button({x: godLabel.p.x + 110, y: godLabel.p.y+15, w: 50, h: 50, asset:"rightarrow.png" }));
 
-  var buttonHelp = stage.insert(new Q.UI.Button({x: 50, y: 50, w: 50, h: 50, asset:"help.png" }));
+  var buttonResume = stage.insert(new Q.UI.Button({x: Q.width/2 + 50, y: Q.width/2-450, fill: "#FFFFFF", label: "How do play?"}));
+
+  var buttonHelp = stage.insert(new Q.UI.Button({x: godTextLabel.p.x -120, y: godTextLabel.p.y + 15, w: 50, h: 50, asset:"help.png" }));
   var buttonCredits = stage.insert(new Q.UI.Button({x: Q.width -50, y: 50, w: 50, h: 50, asset:"credits.png" }));
 
   var enterText = stage.insert(new Q.UI.Button({x: Q.width/2+30, y: difLabel.p.y + 180, label: "Press ENTER to START", color: "#FFFFFF", font: "ethnocentric", keyActionName: "confirm"}));
@@ -1818,12 +1823,20 @@ Q.scene('menu', function(stage) {
     Q.stageScene('Intro', 0);
   });
 
+  buttonResume.on("click", function() {
+
+  });
+
   buttonHelp.on("click", function() {
+    if(Q.stage(1) == undefined){
       Q.stageScene('Help', 1);
+    }
   });
 
   buttonCredits.on("click", function(){
-    Q.stageScene('About', 1);
+    if(Q.stage(1) == undefined){
+      Q.stageScene('About', 1);
+    }
   });
 
   buttonLM.on("click", function() {
@@ -1917,12 +1930,13 @@ Q.scene('Help',function(stage) {
       labelMH = container.insert(new Q.UI.Text({x:0, y: posY, label: hmsgs[i].msg, color: "#FFFFFF", family:"ethnocentric", size: 20}));
       posY += 50;
     }
+    if(!inGame){
+      var button = container.insert(new Q.UI.Button({ x: 0, y: posY + 50, fill: '#CCCCCC', label: 'EXIT', font: "ethnocentric"}))
+      button.on('click',function() {
+        Q.clearStage(1);
+      });
+    }
 
-    var button = container.insert(new Q.UI.Button({ x: 0, y: posY + 50, fill: '#CCCCCC', label: 'EXIT', font: "ethnocentric"}))
-
-    button.on('click',function() {
-      Q.clearStage(1);
-    });
 
     container.fit(20);
   });
@@ -1941,22 +1955,21 @@ Q.scene('About',function(stage) {
     var label3 = container.insert(new Q.UI.Text({x:0, y: Q.height/2 + 220, label: "Enrique Ituarte Martínez-Millán", color: "#FFFFFF", family:"ethnocentric", size: 20}));
     var label4 = container.insert(new Q.UI.Text({x:0, y: Q.height/2 + 260, label: "Carlos López Martínez", color: "#FFFFFF", family:"ethnocentric", size: 20}));
     var label4 = container.insert(new Q.UI.Text({x:0, y: Q.height/2 + 300, label: "Javier López de Lerma", color: "#FFFFFF", family:"ethnocentric", size: 20}));
-
-    var button = container.insert(new Q.UI.Button({ x: 0, y: Q.height/2 + 400, fill: '#CCCCCC', label: 'EXIT',  font: "ethnocentric"}))
-
-    button.on('click',function() {
-      Q.clearStage(1);
-    });
-
+    if(!inGame){
+      var button = container.insert(new Q.UI.Button({ x: 0, y: Q.height/2 + 400, fill: '#CCCCCC', label: 'EXIT',  font: "ethnocentric"}))
+      button.on('click',function() {
+        Q.clearStage(1);
+      });
+    }
     container.fit(20);
   });
 
 Q.scene('wingame',function(stage) {
   var fondo = stage.insert(new Q.Fondo("fondo.png"));
+  inGame = false;
+  var cont = stage.insert(new Q.UI.Container({ x: fondo.p.x-180, y: fondo.p.y-150, fill: 'rgba(0,0,0,0.5)' }));
 
-  var cont = stage.insert(new Q.UI.Container({ x: fondo.p.x-180, y: fondo.p.y-250, fill: 'rgba(0,0,0,0.5)' }));
-
-  var textLabel = stage.insert(new Q.UI.Text({x: Q.width/2 + 30,y: Q.height/2-250, label: "You Win", family: "ethnocentric",color: "#FFFFFF", size: 70}));
+  var textLabel = stage.insert(new Q.UI.Text({x: Q.width/2 + 30,y: Q.height/2-100, label: "You Win", family: "ethnocentric",color: "#FFFFFF", size: 70}));
 
   var player = Q.state.get('player');
 
@@ -1966,7 +1979,7 @@ Q.scene('wingame',function(stage) {
   var fuelLabel = cont.insert(new Q.UI.Text({x: cont.p.x/2-70,y: cont.p.y+60, label: "Fuel "+player.fuel+" %", family: "ethnocentric",color: "#000000", size: 25}));
   var blasterLabel = cont.insert(new Q.UI.Text({x: cont.p.x/2-70,y: cont.p.y+90, label: "Blaster "+player.blaster+" %", family: "ethnocentric",color: "#000000", size: 25}));
 
-  var enterText = stage.insert(new Q.UI.Button({x: Q.width/2+30, y: Q.height/2 + 180, label: "Press ENTER to go back to main MENU", font: "ethnocentric", color: "#FFFFFF", keyActionName: "confirm"}));
+  var enterText = stage.insert(new Q.UI.Button({x: Q.width/2+30, y: Q.height/2 + 280, label: "Press ENTER to go back to main MENU", font: "ethnocentric", color: "#FFFFFF", keyActionName: "confirm"}));
 
   enterText.on("click",function() {
     Q.clearStages();
@@ -1978,6 +1991,7 @@ Q.scene('wingame',function(stage) {
 });
 
 Q.scene('losegame',function(stage) {
+  inGame = false;
   var fondo = stage.insert(new Q.Fondo("fondo.png",Q.width,Q.height));
   var textLabel = stage.insert(new Q.UI.Text({x: Q.width/2+30,y: Q.height/2-130, label: "You Lose", family: "ethnocentric",color: "#FFFFFF", size: 40}));
   var msg = Q.state.get('messages');
