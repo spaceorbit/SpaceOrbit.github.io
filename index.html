@@ -5,6 +5,8 @@
 <title>Orbit</title>
 <link rel="icon" type="image/png" href="images/6.png"/>
 <link rel="stylesheet" type="text/css" href="game.css">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.js"></script>
 <script src='lib/quintus.js'></script>
 <!-- Añadir aquí el resto de módulos de Quintus -->
     <script src='lib/quintus_sprites.js'></script>
@@ -23,14 +25,14 @@
 </style>
 
 </head>
-<body 
-    style="
-        background-image: url('images/loader.gif');
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: cover;">
+<body>
 	<script type = "text/javascript">
+    $(window).load(function() {
+      // Animate loader off screen
+      $(".se-pre-con").fadeOut("slow");
+    });
     window.onload = game;
     </script>
 </body>
+<div class="se-pre-con"></div>
 </html>

@@ -744,7 +744,7 @@ Q.Sprite.extend("Spaceship", {
         var offsetX = (this.p.dir == "right" ? 25 : -25);
         var p = Q.state.get("player");
         if(p.blaster > 0){
-          p.blaster -= 5;
+          if (!Q.state.get("godMode")) p.blaster -= 5;
           Q.stage().insert(new Q.Bullet(this.p.x + offsetX, this.p.y + 8, this.p.dir , this.p.x, this.p.y));
           if(Q.state.get("audio"))
             Q.audio.play("fireAux.mp3"); // Reproducimos audio de blaster
@@ -771,7 +771,7 @@ Q.Sprite.extend("Spaceship", {
     });
 
     //----------------MODO GOD --------------- //
-
+    
     Q.input.on("ONE", this, function(){
       if(Q.state.get("godMode")){
         Q.state.set("level", 1);
@@ -997,7 +997,7 @@ Q.Sprite.extend("Spaceship", {
     }
 
     // Comprobamos el tiempo para reducir la cantidad de oxígeno
-    if(this.p.m%150 == 0){
+    if(this.p.m%150 == 0 && !Q.state.get("godMode")) { // Si esta en modo dios no se reduce el oxigeno
       var player = Q.state.get('player');
       player.oxygen -= 1 * Q.state.get("difficulty");
       Q.state.set('player', player);
@@ -1011,39 +1011,39 @@ Q.Sprite.extend("Spaceship", {
     }
   },
   wreckShip: function(damage){
-    var p = Q.state.get("player");
-    p.shipHealth -= damage;
-    this.p.damaged = false;
-    if(p.shipHealth <= 30){
-      Q.Dialogue.play("ship_critical");
-    }
-    if(p.shipHealth <= 0){
-      p.shipHealth = 0;
-      var messages = Q.state.get("messages");
-      messages["3"].active = true;
-      Q.state.set("messages", messages);
-      this.stage.insert(new Q.Explosion(this.p.x, this.p.y, 0.4, true));
-      this.die();
-    }
-    Q.state.set("player", p);
-  },
-  useFuel: function(fuel){
-    var p = Q.state.get("player");
-    p.fuel -= fuel;
-    if(p.fuel <= 0){
-      p.fuel = 0;
-      Q.Dialogue.play("fuel_critical");
-      // Comprobar v = 0 y EndGame
-      if(this.p.stuck){
+      var p = Q.state.get("player");
+      if (!Q.state.get("godMode"))p.shipHealth -= damage;
+      this.p.damaged = false;
+      if(p.shipHealth <= 30){
+        Q.Dialogue.play("ship_critical");
+      }
+      if(p.shipHealth <= 0){
+        p.shipHealth = 0;
         var messages = Q.state.get("messages");
-        messages["1"].active = true;
+        messages["3"].active = true;
         Q.state.set("messages", messages);
+        this.stage.insert(new Q.Explosion(this.p.x, this.p.y, 0.4, true));
         this.die();
       }
+      Q.state.set("player", p);
+  },
+  useFuel: function(fuel){
+      var p = Q.state.get("player");
+      if (!Q.state.get("godMode")) p.fuel -= fuel;
+      if(p.fuel <= 0){
+        p.fuel = 0;
+        Q.Dialogue.play("fuel_critical");
+        // Comprobar v = 0 y EndGame
+        if(this.p.stuck){
+          var messages = Q.state.get("messages");
+          messages["1"].active = true;
+          Q.state.set("messages", messages);
+          this.die();
+        }
+      }
+      this.p.stuck = false;
+      Q.state.set("player", p);
     }
-    this.p.stuck = false;
-    Q.state.set("player", p);
-  }
 
 });
 
