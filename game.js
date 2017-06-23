@@ -454,7 +454,14 @@ Q.state.set({
         },
         5:{
           msg: 'Pulsa [5] para teletransportar antes de la estación espacial',
+        },
+        6:{
+          msg: 'Pulsa [H] para mostrar la Ayuda',
+        },
+        7:{
+          msg: 'Pulsa [Q] para quitar la Ayuda',
         }
+
       }
   });
 
@@ -1600,7 +1607,7 @@ Q.scene("HUD", function(stage){
 });
 
 Q.load(["credits.png","help.png","finalStation.png", "wingame.png", "losegame.png", "space_station1.png", "space_station2.png", "space_station3.png", "explosion.json","explosion.png", "Starship_Pilot.png", "Space_Captain.png", "Space_Commander.png", "fireAux.mp3","explosion.mp3", "interstellar.mp3", "godmode.mp3", "spaceship.png", "spaceship.json", "1.png","2.png", "3.png","4.png","5.png","6.png","7.png",
-  "8.png","blackhole.png", "quarterStarfield.png", "Space_Android.png",
+  "blackhole.png", "quarterStarfield.png", "Space_Android.png",
   "quarterStarfield2.png", "vortex.png", "wormhole.png",
   "interiorCircularInfluence.png", "exteriorCircularInfluence.png",
   "spaceship_pro.json", "spaceship_sheet_min.png",
@@ -1771,6 +1778,12 @@ Q.scene("Intro",function(stage) {
         },
         5:{
           msg: 'Pulsa [5] para teletransportar antes de la estación espacial',
+        },
+        6:{
+          msg: 'Pulsa [H] para mostrar la Ayuda',
+        },
+        7:{
+          msg: 'Pulsa [Q] para quitar la Ayuda',
         }
       }
     });
@@ -1803,8 +1816,6 @@ Q.scene('menu', function(stage) {
   var buttonLG = stage.insert(new Q.UI.Button({x: godLabel.p.x - 110, y: godLabel.p.y+15, w: 50, h: 50, asset:"leftarrow.png" }));
   var buttonRG = stage.insert(new Q.UI.Button({x: godLabel.p.x + 110, y: godLabel.p.y+15, w: 50, h: 50, asset:"rightarrow.png" }));
 
-  var buttonResume = stage.insert(new Q.UI.Button({x: Q.width/2 + 50, y: Q.width/2-450, fill: "#FFFFFF", label: "How do play?"}));
-
   var buttonHelp = stage.insert(new Q.UI.Button({x: godTextLabel.p.x -120, y: godTextLabel.p.y + 15, w: 50, h: 50, asset:"help.png" }));
   var buttonCredits = stage.insert(new Q.UI.Button({x: Q.width -50, y: 50, w: 50, h: 50, asset:"credits.png" }));
 
@@ -1819,10 +1830,6 @@ Q.scene('menu', function(stage) {
   enterText.on("click",function() {
     Q.audio.stop();
     Q.stageScene('Intro', 0);
-  });
-
-  buttonResume.on("click", function() {
-
   });
 
   buttonHelp.on("click", function() {
@@ -1912,7 +1919,7 @@ Q.scene('Help',function(stage) {
   var container = stage.insert(new Q.UI.Container({
       fill: "rgba(130, 84, 164, 0.9)",
       border: 2,
-      y: -Q.height/2 + 100,
+      y: -Q.height/2 + 50,
       x: Q.width/2
     }));
 
@@ -1949,10 +1956,13 @@ Q.scene('About',function(stage) {
     }));
 
     var label1 = container.insert(new Q.UI.Text({x:0, y: Q.height/2 + 20, label: "Credits", color: "#FFFFFF" , family:"ethnocentric", size: 50}));
-    var label2 = container.insert(new Q.UI.Text({x:0, y: Q.height/2 + 170, label: "Members", color: "#FFFFFF", family:"ethnocentric", size: 30}));
-    var label3 = container.insert(new Q.UI.Text({x:0, y: Q.height/2 + 220, label: "Enrique Ituarte Martínez-Millán", color: "#FFFFFF", family:"ethnocentric", size: 20}));
-    var label4 = container.insert(new Q.UI.Text({x:0, y: Q.height/2 + 260, label: "Carlos López Martínez", color: "#FFFFFF", family:"ethnocentric", size: 20}));
-    var label4 = container.insert(new Q.UI.Text({x:0, y: Q.height/2 + 300, label: "Javier López de Lerma", color: "#FFFFFF", family:"ethnocentric", size: 20}));
+    var label2 = container.insert(new Q.UI.Text({x:0, y: Q.height/2 + 100, label: "Members", color: "#FFFFFF", family:"ethnocentric", size: 30}));
+    var label3 = container.insert(new Q.UI.Text({x:0, y: Q.height/2 + 150, label: "Enrique Ituarte Martínez-Millán", color: "#FFFFFF", family:"ethnocentric", size: 20}));
+    var label4 = container.insert(new Q.UI.Text({x:0, y: Q.height/2 + 190, label: "Carlos López Martínez", color: "#FFFFFF", family:"ethnocentric", size: 20}));
+    var label5 = container.insert(new Q.UI.Text({x:0, y: Q.height/2 + 230, label: "Javier López de Lerma", color: "#FFFFFF", family:"ethnocentric", size: 20}));
+    var label5 = container.insert(new Q.UI.Text({x:0, y: Q.height/2 + 270, label: "---------------------", color: "#FFFFFF", family:"ethnocentric", size: 20}));
+    var label5 = container.insert(new Q.UI.Text({x:0, y: Q.height/2 + 290, label: "References", color: "#FFFFFF", family:"ethnocentric", size: 20}));
+    var label5 = container.insert(new Q.UI.Text({x:0, y: Q.height/2 + 330, label: "Orbit, Satalaunch, Gravity Guy, Angry Birds: Star Wars", color: "#FFFFFF", family:"ethnocentric", size: 20}));
     if(!inGame){
       var button = container.insert(new Q.UI.Button({ x: 0, y: Q.height/2 + 400, fill: '#CCCCCC', label: 'EXIT',  font: "ethnocentric"}))
       button.on('click',function() {

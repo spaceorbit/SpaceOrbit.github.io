@@ -4,12 +4,26 @@
 * [Technical datasheet](#technical-datasheet)
 * [Description](#description)
 * [Ambient](#ambient)
-* [Mechanics](#mechanics)
-	* [Player](#player)
-	* [Debris](#debris)
-	* [Planet](#planet)
-	* [Wormhole](#wormhole)
-	* [Station](#station)
+* [Design](#design)
+  * [Mechanics](#mechanics)
+	  * [Player](#player)
+	  * [Debris](#debris)
+	  * [Planet](#planet)
+	  * [Wormhole](#wormhole)
+	  * [Station](#station)
+* [Implementation](#implementation)
+  * [Architecture](#architecture)
+	  * [Q.state](#Q.state)
+	  * [Debris](#debris)
+	  * [Planet](#planet)
+	  * [Wormhole](#wormhole)
+	  * [Station](#station)
+  * [Components](#components)
+	  * [Player](#player)
+	  * [Debris](#debris)
+	  * [Planet](#planet)
+	  * [Wormhole](#wormhole)
+	  * [Station](#station)
 * [References](#references)
 * [Risks](#risks)
 * [About us](#about-us)
@@ -42,34 +56,43 @@ see more info about this engine at these links:
 
 ## Ambient
 
-* Year 2157. Humanity is doing exploration missions with the objective of finding new inhabitable planets. You and your crew were in one of these interstellar trips, where whilst you were in the exterior of the ship Onyxia trying to repair one of the propulsors, there was an issue in the pressurization system, which led to a chain combustion that wrecked the entire ship. You must rapidly travel to the closest space station before your oxygen goes out.
+* Year 2157. Humanity is doing exploration missions with the objective of finding new inhabitable planets. To instantaneously communicate through space, a new Interstellar Communication Satellite type has been created. You and your crew were in one of these interstellar trips, on some maintenance mission, when suddenly, there was an issue in the pressurization system, which led to a chain combustion that wrecked the entire satellite. You must rapidly travel to the closest space station before your oxygen goes out.
 
 * The game will have orthogonal graphics, where the player will go horizontally from left to right, unless he enters the event horizon, where space and time will be bent.
 
+# Design
 
 ## Mechanics
 
 ### Player
-* The player can propel himself to escape gravitational pull from the closest planet. Clicking anywhere on the screen will calculate the direction of propulsion.
-* The astronaut will have an oxygen timer, reaching zero, will end the game, having lost.
-* The space suit will deteriorate with physical impacts. If utterly damaged, the player will lose the game.
+* The player can propel himself to escape gravitational pull from the closest planet. Use right, left, up and down keyboard arrows to propel the ship in each direction. Each propulsion stacks up to four times. 
+* The ship will have an oxygen timer, reaching zero, will end the game, having lost.
+* The ship will deteriorate with physical impacts. If utterly damaged, the player will lose the game.
+* The ship will use its propulsors, spending fuel. The player must be careful not to press and maintain on one of the arrow keys as it will use up all the fuel.
+* Use the spacebar to fire the blaster. Its energy will regenerate over time if playing in low difficulty mode.
 
 ### Debris
 * Some space debris will appear as we go through the screens.
-* Some of it will give enhancements like extra propulsion or oxygen, although most will damage the suit.
+* Some of it will give enhancements like repairs, fuel or oxygen.
+* Meteorites of big or medioum size will split up in two. Causing half as damage.
+* Satellites will prompt OxygenCharges if destroyed.
 
 ### Planet
 * The planets will vary in size, as will their gravitational pull.
-* If the astronaut gets close enough to the planet, he will get stuck and will not be able to reach the Station.
+* If the astronaut gets close enough to the planet, he will get stuck and will have to use extra fuel to propel out of its gravitational pull. This should be an expensive task.
+* All planets can have random space debris orbiting around.
 
 ### Wormhole
-* Wormholes will help the astronaut.
-* Whilst in the event horizon, the player will be able to obtain rewards (enhancements to the suit, extra points…), before starting the next screen.
+* Wormholes will help the spaceship, transporting it through space and time.
+* Whilst in the event horizon, the player will be able to obtain rewards, before starting the next screen.
 
 ### Station
 * The Space Station will mean the end of the game.
-* The astronaut will have made it alive, having obtained the maximum of points possible.
+* The crew will have made it alive, having earned the respect of all humanity.
 
+### Dialogue
+* Dialogues will prompt on the screen from time to time, given specific triggered events.
+* Their purpose is to provide a cohesive story.
 
 ## Sources and References
 Assets
