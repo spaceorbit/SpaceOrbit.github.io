@@ -2,7 +2,6 @@
 
 * [What is orbit?](#what-is-orbit)
 * [Technical datasheet](#technical-datasheet)
-* [Description](#description)
 * [Ambient](#ambient)
 * [Design](#design)
   * [Mechanics](#mechanics)
@@ -13,24 +12,22 @@
 	  * [Station](#station)
 * [Implementation](#implementation)
   * [Architecture](#architecture)
-	  * [Q.state](#Q.state)
-	  * [Debris](#debris)
-	  * [Planet](#planet)
-	  * [Wormhole](#wormhole)
-	  * [Station](#station)
+	  * [Quintus](#Quintus)
   * [Components](#components)
-	  * [Player](#player)
-	  * [Debris](#debris)
-	  * [Planet](#planet)
-	  * [Wormhole](#wormhole)
-	  * [Station](#station)
+* [Teamwork](#teamwork)
+  * [Work distribution](#work-distribution)
 * [References](#references)
 * [Risks](#risks)
 * [About us](#about-us)
 
  ## What is orbit?
 
-This is our game for the subject "Videogames development with web technologies". This game has been made with **_Quintus Engine_**, you can
+This is our game for the subject "Videogames development with web technologies". 
+
+* Orbit is a runner type game set up in space.
+* There will be various screens, spaced by wormholes, where in an incremental fashion, the astronaut will have to overcome danger.
+
+This game has been made with **_Quintus Engine_**, you can
 see more info about this engine at these links:
 
 * [HTML5Quintus.com](http://html5quintus.com/)
@@ -40,7 +37,7 @@ see more info about this engine at these links:
 
 * **Title:** Orbit
 * **Genre:** Runner
-* **Platforms:** PC and Mobile
+* **Platforms:** PC
 * **Modes:** Arcade
 * **Age rating:** +5
 * **Developers:** 
@@ -48,11 +45,6 @@ see more info about this engine at these links:
 	* Enrique Ituarte Martínez-Millán
 	* Javier López de Lerma
 
-## Description
-
-* Orbit is a runner type game set up in space. The player must travel horizontally with an initial velocity, and will have to use his propulsors to avoid nearby planets and use their gravitational pull to reach the Space Station.
-
-* There will be various screens, spaced by wormholes, where in an incremental fashion, the astronaut will have to overcome danger.
 
 ## Ambient
 
@@ -61,6 +53,12 @@ see more info about this engine at these links:
 * The game will have orthogonal graphics, where the player will go horizontally from left to right, unless he enters the event horizon, where space and time will be bent.
 
 # Design
+
+## Objective
+
+The player must travel horizontally with an initial velocity, and will have to use his propulsors to avoid nearby planets and use their gravitational pull to reach the Space Station. Reflexes and paying attention to the HUD will come in handy.
+
+If the player fails to do so, wrecking up the ship against hostile objects, running out of oxygen or fuel and getting stuck in a planet, will lose the game.
 
 ## Mechanics
 
@@ -92,10 +90,54 @@ see more info about this engine at these links:
 
 ### Dialogue
 * Dialogues will prompt on the screen from time to time, given specific triggered events.
-* Their purpose is to provide a cohesive story.
+* Their purpose is to provide a cohesive story for the game.
+
+# Implementation
+
+## Architecture
+
+### Quintus
+
+We have used Quintus.JS, and one paramount advantage has been the utilization of Q.state for developing a fictional physics model. Its approach has been one the closest to the real world we have been able to think of. Q.state represents positions, starting points, planet details, etcetera.
+
+We have edited this framework several times, even developing the Q.Dialogue.js
+
+We have also taken advantage of Components and Sprites for complimenting these behaviours.
+
+## Components
+
+There are several components to the sprite:
+* Hostile. It indicates the object will cause damage (Meteorite/Satellite)in case of hitting the ship.
+* Reward. It will either provide health (Screw), fuel (Fuel) or oxygen (OxygenCharge).
+* 2D. It provides 2D movement across space.
+* 3D. It provides 3D movement when spawned in a black hole Event Horizon.
+* Orbit. It provides orbital movement around a given planet.
+ 
+Mixing up Hostile and Reward with the three types of movement has given us the opportunity to play with all kinds of possibilities
+
+We have also created different components for the behaviour of the Debris Spawner:
+
+* AsteroidField. Depending on the level (passed through the first black hole or second) it will either prompt 2D slow moving meteorites or 2D fast downward moving ones (asteroid rain). Our robot will detect both, prompting a dialogue.
+* OrbitSpawner. It creates random debris around a given planet.
+* Spawner2D. It spawns 2D space debris, with 2D movement component and hostile or reward component.
+* Spawner3D. It spanws 3D space debris, with 3D movement component, and hostile or reward component.
+
+# Teamwork
+
+We set out very early. Javier started out with the implementation of Q.Dialogue.js, while Enrique and Carlos put into practice all the considerations had in discussions. Enrique started with the physics model whilst Carlos implemented the first iteration of the space debris and its spawner. In the end, all of the team worked together to deliver the best version of Orbit they could think of.
+
+## Work distribution
+
+* Javier López: 28%
+* Carlos López: 34%
+* Enrique Ituarte: 38%
+
 
 ## Sources and References
 Assets
+* All main graphics have been designed or edited by Enrique Ituarte.
+* [Justin Nichols] (https://opengameart.org/users/justin-nichol)
+* [angryfly3d] (https://sketchfab.com/angryfly3d)
 * [Help icon](http://www.freeiconspng.com/uploads/help-icon-12.png)
 * [Credits icon](https://cdn2.iconfinder.com/data/icons/app-types-in-grey/512/info_512pxGREY.png)
 
@@ -117,23 +159,3 @@ Games
 * [Carlos López Martínez](https://github.com/CharlieGnomo)
 * [Enrique Ituarte Martínez-Millán](https://github.com/eituarte)
 * [Javier López de Lerma](https://github.com/javlop05)
-
-
-* [Diseño del juego](#diseño-del-juego)
-  * [Objetivo del juego](#objetivo-del-juego)
-  * [Principales mecánicas](#principales-mecanicas)
-* [Diseño de la implementacion](#diseño-de-la-implementacion)
-* [Equipo de trabajo y reparto de tareas](#equipo-de-trabajo-y-reparto-de-tareas)
-* [Fuentes y referencias](#fuentes-y-referencias)
-
- ## Diseño del juego 
- 
- ### Objetivo del juego
- 
- ### Principales mecánicas
- 
- ## Diseño de la implementación
- 
- ## Equipo de trabajo y reparto de tareas
- 
- ## Fuentes y referencias

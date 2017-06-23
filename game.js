@@ -157,6 +157,8 @@ Q.Sprite.extend("Station", {
         }
         collision.obj.play("arrive");
         collision.obj.animate({x: this.p.x, y: this.p.y + 30, scale: 0.2}, 2.5, {callback: function(){
+
+          Q.clearStages();
           Q.Dialogue.play("win");
           Q.stageScene("wingame", 0);
           this.destroy();
@@ -441,27 +443,29 @@ Q.state.set({
       difficulty: config.difficulty,
       helpMsg: {
         1: {
-          msg: 'Pulsa [1] para teletransportar al principio',
+          msg: 'Press [1] to jump to the beginning',
         },
         2:{
-          msg: 'Pulsa [2] para teletransportar antes del primer agujero negro',
+          msg: 'Press [2] to jump before the first wormhole.',
         },
         3:{
-          msg: 'Pulsa [3] para teletransportar antes del segundo agujero negro',
+          msg: 'Press [3] to jump before the second wormhole.',
         },
         4:{
-          msg: 'Pulsa [4] para teletransportar después del segundo agujero negro',
+          msg: 'Press [4] to jump after the first wormhole.',
         },
         5:{
-          msg: 'Pulsa [5] para teletransportar antes de la estación espacial',
+          msg: 'Press [5] to jump after the second wormhole.',
         },
         6:{
-          msg: 'Pulsa [H] para mostrar la Ayuda',
+          msg: 'Press [6] to jump before the SpaceStation',
         },
         7:{
-          msg: 'Pulsa [Q] para quitar la Ayuda',
+          msg: 'Press [H] to show the help',
+        },
+        8:{
+          msg: 'Press [Q] to hide the help',
         }
-
       }
   });
 
@@ -780,39 +784,44 @@ Q.Sprite.extend("Spaceship", {
     });
 
     //----------------MODO GOD --------------- //
-
+    //Al principio del nivel
     Q.input.on("ONE", this, function(){
       if(Q.state.get("godMode")){
         Q.state.set("level", 1);
         this.p.x = 200;
-        // Configurar contadores de debrisSpawner y conversaciones correctamente
       }
     });
-
+    //Antes del 1 agujero negro
     Q.input.on("TWO", this, function(){
       if(Q.state.get("godMode")){
         Q.state.set("level", 2);
-        this.p.x = 21000;
+        this.p.x = 9900;
       }
     });
-
+    //Antes del 2 agujero negro
     Q.input.on("THREE", this, function(){
       if(Q.state.get("godMode")){
         Q.state.set("level", 3);
-        this.p.x = 84000;
+        this.p.x = 41000;
       }
     });
-
+    //después del primer agujero negro(antes del campo de asteroides).
     Q.input.on("FOUR", this, function(){
       if(Q.state.get("godMode")){
-        this.p.x = 9000;
+        this.p.x = 21000;
       }
     });
-
+    //después del segundo agujero negro (antes de la lluvia de meteoritos)
     Q.input.on("FIVE", this, function(){
       if(Q.state.get("godMode")){
-        this.p.x = 41000;
+        this.p.x = 84000;
         Q.state.set("level", 2);
+      }
+    });
+    //antes de la estación espacial
+    Q.input.on("SIX", this, function(){
+      if(Q.state.get("godMode")){
+        this.p.x = 122000;
       }
     });
 
@@ -1015,6 +1024,7 @@ Q.Sprite.extend("Spaceship", {
         messages["2"].active = true;
         Q.state.set("messages", messages);
         this.destroy();
+        Q.clearStages();
         Q.stageScene("losegame", 0);
       }
     }
@@ -1763,27 +1773,30 @@ Q.scene("Intro",function(stage) {
           active: false
         }
       },
-      helpMsg: {
+       helpMsg: {
         1: {
-          msg: 'Pulsa [1] para teletransportar al principio',
+          msg: 'Press [1] to jump to the beginning',
         },
         2:{
-          msg: 'Pulsa [2] para teletransportar antes del primer agujero negro',
+          msg: 'Press [2] to jump before the first wormhole.',
         },
         3:{
-          msg: 'Pulsa [3] para teletransportar antes del segundo agujero negro',
+          msg: 'Press [3] to jump before the second wormhole.',
         },
         4:{
-          msg: 'Pulsa [4] para teletransportar después del segundo agujero negro',
+          msg: 'Press [4] to jump after the first wormhole.',
         },
         5:{
-          msg: 'Pulsa [5] para teletransportar antes de la estación espacial',
+          msg: 'Press [5] to jump after the second wormhole.',
         },
         6:{
-          msg: 'Pulsa [H] para mostrar la Ayuda',
+          msg: 'Press [6] to jump before the SpaceStation',
         },
         7:{
-          msg: 'Pulsa [Q] para quitar la Ayuda',
+          msg: 'Press [H] to show the help',
+        },
+        8:{
+          msg: 'Press [Q] to hide the help',
         }
       }
     });
