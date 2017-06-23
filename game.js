@@ -1617,8 +1617,6 @@ Q.load(["credits.png","help.png","finalStation.png", "wingame.png", "losegame.pn
     //if(Q.state.get("audio") == "on")
       //Q.audio.play('interstellar.mp3',{ loop: true });
     Q.stageScene("menu", 0);
-
-    Q.debug = true;
 });
 
 
